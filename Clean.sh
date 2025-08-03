@@ -14,15 +14,15 @@ cd "${PROJECT_DIR}/raw"
 
 
 # Group SRA run IDs by biological sample (4 runs each)
-youngminusd=(SRR34830030 SRR34830031 SRR34830032 SRR34830033)   # SRX7865899
-youngplusd=(SRR34830034 SRR34830035 SRR34830036 SRR34830037)   # SRX7865900
-senescentminusd=(SRR34830038 SRR34830039 SRR34830040 SRR34830041)    # SRX7865901
-senescentplusd=(SRR34830042 SRR34830043 SRR34830044 SRR34830045)    # SRX7865902
+youngminusd=(SRX7865899)   # SRX7865899
+youngplusd=(SRX7865900)   # SRX7865900
+senescentminusd=(SRX7865901)    # SRX7865901
+senescentplusd=(SRX7865902)    # SRX7865902
 
 # -------------------- Download & Convert --------------------
 
 # Download .sra files
-for r in "${youngminusd[@]}" "${NORM2[@]}" "${HYP1[@]}" "${HYP2[@]}"; do
+for r in "${youngminusd[@]}" "${youngplusd[@]}" "${senescentminusd[@]}" "${senescentplud[@]}"; do
   prefetch "$r"
 done
 
@@ -85,12 +85,12 @@ STAR --genomeDir indexes/chr10 \
 # -------------------- Quantification (featureCounts) --------------------
 
 cd ..
-curl -L -o gencode.v44.annotation.gtf.gz \
-  https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/gencode.v44.annotation.gtf.gz
-gunzip -f gencode.v44.annotation.gtf.gz
+curl -L -o gencode.v48.annotation.gtf.gz \
+  https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_48/gencode.v48.annotation.gtf.gz
+gunzip -f gencode.v48.annotation.gtf.gz
 
 featureCounts -T 16 -t exon -g gene_name \
-  -a gencode.v44.annotation.gtf \
+  -a gencode.v48.annotation.gtf \
   -o counts/raw_counts_gene_sym.txt aligned/*.bam \
   &> logs/featureCounts_gene_sym.log
 
