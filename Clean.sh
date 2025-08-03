@@ -14,29 +14,29 @@ cd "${PROJECT_DIR}/raw"
 
 
 # Group SRA run IDs by biological sample (4 runs each)
-NORM1=(SRR34830030 SRR34830031 SRR34830032 SRR34830033)   # GSM9147330
-NORM2=(SRR34830034 SRR34830035 SRR34830036 SRR34830037)   # GSM9147329
-HYP1=(SRR34830038 SRR34830039 SRR34830040 SRR34830041)    # GSM9147328
-HYP2=(SRR34830042 SRR34830043 SRR34830044 SRR34830045)    # GSM9147327
+youngminusd=(SRR34830030 SRR34830031 SRR34830032 SRR34830033)   # SRX7865899
+youngplusd=(SRR34830034 SRR34830035 SRR34830036 SRR34830037)   # SRX7865900
+senescentminusd=(SRR34830038 SRR34830039 SRR34830040 SRR34830041)    # SRX7865901
+senescentplusd=(SRR34830042 SRR34830043 SRR34830044 SRR34830045)    # SRX7865902
 
 # -------------------- Download & Convert --------------------
 
 # Download .sra files
-for r in "${NORM1[@]}" "${NORM2[@]}" "${HYP1[@]}" "${HYP2[@]}"; do
+for r in "${youngminusd[@]}" "${NORM2[@]}" "${HYP1[@]}" "${HYP2[@]}"; do
   prefetch "$r"
 done
 
 # Convert to gzipped FASTQ
-for r in "${NORM1[@]}" "${NORM2[@]}" "${HYP1[@]}" "${HYP2[@]}"; do
+for r in "${youngminusd[@]}" "${youngplusd[@]}" "${senescentminusd[@]}" "${senescentplud[@]}"; do
   fasterq-dump -e 16 -p -O . "$r"
   gzip -f "${r}.fastq"
 done
 
 # Concatenate per-sample FASTQs
-cat "${HYP1[@]/%/.fastq.gz}"  > Hyp1.fastq.gz
-cat "${HYP2[@]/%/.fastq.gz}"  > Hyp2.fastq.gz
-cat "${NORM1[@]/%/.fastq.gz}" > Norm1.fastq.gz
-cat "${NORM2[@]/%/.fastq.gz}" > Norm2.fastq.gz
+cat "${youngminusd[@]/%/.fastq.gz}"  > ym.fastq.gz
+cat "${youngplusd[@]/%/.fastq.gz}"  > yp.fastq.gz
+cat "${senescentminusd[@]/%/.fastq.gz}" > sm.fastq.gz
+cat "${senescentplusd[@]/%/.fastq.gz}" > sp.fastq.gz
 
 # Move to fastq/ folder
 mv Hyp*.fastq.gz Norm*.fastq.gz ../fastq/
@@ -44,7 +44,7 @@ mv Hyp*.fastq.gz Norm*.fastq.gz ../fastq/
 # -------------------- QC --------------------
 
 cd ../fastq
-fastqc Hyp1.fastq.gz Hyp2.fastq.gz Norm1.fastq.gz Norm2.fastq.gz \
+fastqc ym.fastq.gz yp.gz sm.fastq.gz sp.fastq.gz \
   -o ../qc --threads 16
 
 # -------------------- Trimming --------------------
@@ -53,7 +53,7 @@ cd ..
 curl -L -o TruSeq3-SE.fa https://github.com/timflutre/trimmomatic/raw/master/adapters/TruSeq3-SE.fa
 
 cd fastq
-for sample in Hyp1 Hyp2 Norm1 Norm2
+for sample in ym yp sm sp
 do
   trimmomatic SE -threads 16 -phred33 \
     ${sample}.fastq.gz ../trimmed/${sample}_trimmed.fastq.gz \
@@ -62,22 +62,25 @@ do
     &> ../logs/${sample}_trimming.log
 done
 
-# -------------------- Alignment (HISAT2) --------------------
+# -------------------- Alignment (STAR) --------------------
 
-cd ../hisat2_index
-curl -O ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/data/grch38_tran.tar.gz
-tar -xzf grch38_tran.tar.gz
+cd ../STAR_index
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh38.primary_assembly.genome.fa.gz
+unzip GRCh38.primary_assembly.genome.fa.gz
+wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz
+unzip gencode.v29.annotation.gtf.gz
 
+module load star
+GENOMEDIR="./RNAseq/genome/"
+mdkir -p $GENOMEDIR/STAR
+STAR --runThreadN 23 --runMode genomeGenerate --genomeDir $GENOMEDIR/STAR --genomeFastaFiles $GENOMEDIR/GRCh38.primary_assembly.genome.fa --sjdbGTFfile $GENOMEDIR/gencode.v29.primary_assembly.annotation.gtf
 cd ../trimmed
-for sample in Hyp1 Hyp2 Norm1 Norm2
-do
-  hisat2 -p 16 \
-    -x ../hisat2_index/grch38_tran/genome_tran \
-    -U ${sample}_trimmed.fastq.gz \
-    2> ../logs/${sample}_hisat2.log | \
-    samtools sort -@ 16 -o ../aligned/${sample}.bam
-  samtools index ../aligned/${sample}.bam
-done
+STAR --genomeDir indexes/chr10 \
+      --readFilesIn ym.fastq.gz yp.fastq.gz sm.fastq.gz sp.fastq.gz \
+      --readFilesCommand zcat \
+      --outSAMtype BAM SortedByCoordinate \
+      --quantMode GeneCounts \
+      --outFileNamePrefix alignments/
 
 # -------------------- Quantification (featureCounts) --------------------
 
