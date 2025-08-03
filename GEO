@@ -89,7 +89,7 @@ legend("topleft", groups, fill=palette(), bty="n")
 
 # expression value distribution
 par(mar=c(4,4,2,1))
-title <- paste ("GSE146585", "/", annotation(gset), " value distribution", sep ="")
+title <- paste ("GSE146573", "/", annotation(gset), " value distribution", sep ="")
 plotDensities(ex, group=gs, main=title, legend ="topright")
 
 # UMAP plot (dimensionality reduction)
