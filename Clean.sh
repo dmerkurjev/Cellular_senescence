@@ -47,21 +47,6 @@ cd ../fastq
 fastqc ym.fastq.gz yp.gz sm.fastq.gz sp.fastq.gz \
   -o ../qc --threads 16
 
-# -------------------- Trimming --------------------
-
-cd ..
-curl -L -o TruSeq3-SE.fa https://github.com/timflutre/trimmomatic/raw/master/adapters/TruSeq3-SE.fa
-
-cd fastq
-for sample in ym yp sm sp
-do
-  trimmomatic SE -threads 16 -phred33 \
-    ${sample}.fastq.gz ../trimmed/${sample}_trimmed.fastq.gz \
-    ILLUMINACLIP:../TruSeq3-SE.fa:2:30:10 \
-    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:15 MINLEN:36 \
-    &> ../logs/${sample}_trimming.log
-done
-
 # -------------------- Alignment (STAR) --------------------
 
 cd ../STAR_index
