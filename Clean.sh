@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# RNA-seq mini-pipeline (SE reads): QC → trimming → alignment → counting
+# RNA-seq mini-pipeline: QC → alignment → counting
 
 # -------------------- Setup --------------------
 
 
 # Define project structure relative to current location
 PROJECT_DIR="./data_pre_processing"
-mkdir -p "${PROJECT_DIR}"/{raw,fastq,trimmed,aligned,counts,logs,qc,hisat2_index}
+mkdir -p "${PROJECT_DIR}"/{raw,fastq,aligned,counts,logs,qc,STAR_index}
 
 
 cd "${PROJECT_DIR}/raw"
