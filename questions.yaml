@@ -40,5 +40,5 @@ questions:\
 \
   - id: q5\
     stage: differential_expression\
-    text: "Which gene is ranked 3th by log2 fold change (most upregulated) in young vs senescent +dox?"\
+    text: "Which gene is ranked 3th by log2 fold change (most upregulated) in young vs. senescent +dox?"\
     answer_type: string_exact}
