@@ -4,7 +4,7 @@ This repository contains an end-to-end workflow for RNA-seq analysis of early pa
 It includes two main components:
 
 Preprocessing (preprocess.sh)
-Downloads SRA runs, builds 4 sample FASTQs, performs QC, trimming, alignment, and gene transcription level.
+Downloads SRA runs, builds 4 sample FASTQs, performs QC, alignment, and outputs gene transcription level.
 
 Analysis (SenescenceRNAseq_analysis.Rmd)
 Performs differential expression analysis using edgeR, generates PCA and volcano plots, and visualizes gene expression levels.
