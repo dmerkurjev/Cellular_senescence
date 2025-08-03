@@ -1,6 +1,6 @@
 Senescence RNA-seq — Preprocessing & Analysis
 
-This repository contains an end-to-end workflow for RNA-seq analysis of early passage and senescent BJ fibroblasts comparing Hypoxia vs Normoxia conditions  in the absence or continued presence of doxycycline (20nm).
+This repository contains an end-to-end workflow for RNA-seq analysis of early passage and senescent BJ fibroblasts in the absence or continued presence of doxycycline (20nm).
 It includes two main components:
 
 Preprocessing (preprocess.sh)
