@@ -8,7 +8,7 @@
 \f0\fs24 \cf0 paper_title:  Ligand-specific regulation of a binary enhancer code dictating cellular senescence
 journal: Proc Natl Acad Sci U S A\
 publication_date: "2025-06-17"\
-doi: 10.3389/fimmu.2022.1080482\
+doi: 10.1073/pnas.2506321122\
 series_accession: GSE146585\
 bioproject: PRJNA610861\
 domain: rna_seq\
@@ -30,7 +30,7 @@ samples:\
   Senescent_1:\
     condition: minus_dox\
     sra_runs: [SRX7865901]\
-  Senescent_1:\
+  Senescent_2:\
     condition: plus_dox\
     sra_runs: [SRX7865902]\
 \
