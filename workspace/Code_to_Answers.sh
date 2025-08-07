@@ -6,7 +6,7 @@ Answers to questions path, please run full script succesfully first to run those
 
 # q1: lanes concatenated for young -dox
 # If you later generate a manifest upstream, read it here instead of hardcoding
-sample_lanes <- c(ym = 4L, yp = 4L, sm = 4L, sp = 4L)
+sample_lanes <- c(ym = 1L, yp = 1L, sm = 1L, sp = 1L)
 ans_q1 <- unname(sample_lanes["ym"])
 
 # q2: library size for senescent -dox
