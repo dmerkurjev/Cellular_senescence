@@ -55,6 +55,6 @@ counts/   # gene-level count matrix
 logs/     # logs from trimming, alignment, counting  
 qc/       # FastQC output  
 STAR_index/  # reference index for alignment  
-Notes
+
 
 You can skip raw FASTQ processing and go straight to analysis using data_RNAcounts/final_counts_symbols.tsv.
