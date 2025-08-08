@@ -3,10 +3,10 @@ Senescence RNA-seq — Preprocessing & Analysis
 This repository contains an end-to-end workflow for RNA-seq analysis of early passage and senescent BJ fibroblasts in the absence or continued presence of doxycycline (20nm).
 It includes two main components:
 
-Preprocessing (preprocess.sh)
+Preprocessing (Clean.sh)
 Downloads SRA runs, builds 4 sample FASTQs, performs QC, alignment, and outputs gene transcription level.
 
-Analysis (SenescenceRNAseq_analysis.Rmd)
+Analysis (Differential_expression.sh)
 Performs differential expression analysis using edgeR, generates PCA and volcano plots, and visualizes gene expression levels.
 
 Data
