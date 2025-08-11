@@ -8,3 +8,4 @@ wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos8/sra-pub-zq-818/SRR011/112
 
 wget https://sra-downloadb.be-md.ncbi.nlm.nih.gov/sos8/sra-pub-zq-818/SRR011/11255/SRR11255827/SRR11255827.lite.1 # Senescent +dox SRX7865902
 
+fastq-dump --split-files *lite.1 # convert to fastq
