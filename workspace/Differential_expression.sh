@@ -8,7 +8,7 @@ library(edgeR)
 #   Assume 'counts' is a matrix with genes as rows and samples as columns
 #   and 'group' is a vector indicating the experimental condition for each sample
 counts <- matrix(rnbinom(100*6, size=10, prob=0.5), ncol=6)
-group <- factor(c(1,1,1,2,2,2))
+group <- factor(c(1,1,2,2))
 
 # 3. Create a DGEList object
 y <- DGEList(counts=counts, group=group)
