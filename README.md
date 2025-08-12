@@ -51,8 +51,7 @@ The preprocessing script creates a structured working directory data_pre_process
 raw/      # downloaded and processed SRA FASTQs  
 fastq/    # concatenated FASTQs (one per sample)  
 aligned/  # STAR-aligned BAMs  
-counts/   # gene-level count matrix  
-logs/     # logs from trimming, alignment, counting  
+counts/   # gene-level count matrix   
 qc/       # FastQC output  
 STAR_index/  # reference index for alignment  
 
