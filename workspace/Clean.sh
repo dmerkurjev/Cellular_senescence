@@ -47,25 +47,30 @@ cd ../fastq
 fastqc ym.fastq.gz yp.gz sm.fastq.gz sp.fastq.gz \
   -o ../qc --threads 16
 
-# -------------------- Alignment (STAR) --------------------
+# -------------------- Alignment (hisat) --------------------
 
-cd ../STAR_index
-wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/GRCh38.primary_assembly.genome.fa.gz
-unzip GRCh38.primary_assembly.genome.fa.gz
-wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_29/gencode.v29.annotation.gtf.gz
-unzip gencode.v29.annotation.gtf.gz
+curl -O ftp://ftp.ccb.jhu.edu/pub/infphilo/hisat2/data/hg38.tar.gz
 
-module load star
-GENOMEDIR="./RNAseq/genome/"
-mdkir -p $GENOMEDIR/STAR
-STAR --runThreadN 23 --runMode genomeGenerate --genomeDir $GENOMEDIR/STAR --genomeFastaFiles $GENOMEDIR/GRCh38.primary_assembly.genome.fa --sjdbGTFfile $GENOMEDIR/gencode.v29.primary_assembly.annotation.gtf
-cd ../trimmed
-STAR --genomeDir indexes/chr10 \
-      --readFilesIn ym.fastq.gz yp.fastq.gz sm.fastq.gz sp.fastq.gz \
-      --readFilesCommand zcat \
-      --outSAMtype BAM SortedByCoordinate \
-      --quantMode GeneCounts \
-      --outFileNamePrefix alignments/
+mkdir hisat2_index
+cd hisat2_index
+tar -xzf hg38.tar.gz
+
+cd hisat2_index
+SAMPLES=(ym,yp,sm,sp)
+
+# Align each sample
+for sample in "${SAMPLES[@]}"
+do
+  echo "Aligning ${sample}..."
+  hisat2 -p 4 \
+    -x hisat2_index/hg38/genome \
+    -U fastq/${sample}.fastq.gz \
+    2> logs/${sample}_hisat2.log | \
+    samtools sort -@ 4 -o aligned/${sample}.bam
+  samtools index aligned/${sample}.bam
+  echo "${sample} alignment done."
+done
+
 
 # -------------------- Quantification (featureCounts) --------------------
 
