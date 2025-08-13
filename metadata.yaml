@@ -41,7 +41,7 @@ paths:\
   logs: logs/\
   qc: qc/\
   reference:\
-    hisat2_index: STAR_index/hg38/genome\
+    hisat2_index: hisat2_index/hg38/genome\
     annotation_gtf: gencode.v48.annotation.gtf\
 \
 workflow:\
