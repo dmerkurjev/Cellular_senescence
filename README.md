@@ -53,7 +53,7 @@ fastq/    # concatenated FASTQs (one per sample)
 aligned/  # hisat-aligned BAMs  
 counts/   # gene-level count matrix   
 qc/       # FastQC output  
-hisat_index/  # reference index for alignment  
+hisat2_index/  # reference index for alignment  
 
 
 You can skip raw FASTQ processing and go straight to analysis using data_RNAcounts/final_counts_symbols.tsv.
