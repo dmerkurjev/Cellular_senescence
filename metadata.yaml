@@ -46,6 +46,6 @@ paths:\
 \
 workflow:\
   threads: 16\
-  aligner: STAR\
+  aligner: hisat\
   quantifier: normalizedcounts\
 notes: "Genome wide expression analysis of young vs senescent BJ fibroblasts"}
