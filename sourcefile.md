@@ -1,9 +1,9 @@
 # To download the data:
 
 # Create environment
-conda create -n stroke_rnaseq -c bioconda -c conda-forge \
+conda create -n Cellular_senescence -c bioconda -c conda-forge \
   sra-tools fastqc multiqc hisat2 samtools trimmomatic subread -y
-conda activate stroke_rnaseq
+conda activate Cellular_senescence
 
 # Folder setup
 mkdir -p ~/0_Cellular_senescence/{data,fastq,trimmed,aligned,counts,logs,qc}
